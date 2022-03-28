@@ -6,7 +6,7 @@
   "background": {
     "service_worker": "background.js"
   },
-  "permissions": ["scripting", "active_tab"],
+  "permissions": ["scripting", "activeTab"],
   "host_permissions": ["https://www.nytimes.com/games/wordle/index.html"],
   "action": {
     "default_popup": "popup.html",
