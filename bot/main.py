@@ -1,20 +1,5 @@
 import os.path
 import json
-import discord
-
-client = discord.Client()
-
-@client.event
-async def on_ready():
-    print('We have logged in as {0.user}'.format(client))
-
-@client.event
-async def on_message(message):
-    if message.author == client.user:
-        return
-
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
 
 if not os.path.isfile("token.json"):
     print("Write your token: ", end='')
@@ -30,4 +15,13 @@ with open('token.json', 'r') as file:
     all = json.loads(file.read())
 token = all['token']
 
-client.run(token)
+
+import server, bot
+
+import threading
+
+t1 = threading.Thread(target=lambda:bot.client.run(token))
+t1.start()
+
+if __name__ == "__main__":
+    server.app.run()
