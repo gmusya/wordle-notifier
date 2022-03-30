@@ -1,18 +1,22 @@
-// Initialize butotn with users's prefered color
-let changeColor = document.getElementById("changeColor");
+let stats_button = document.getElementById("get-stats-button");
 
-// When the button is clicked, inject setPageBackgroundColor into current page
-changeColor.addEventListener("click", async () => {
+// When the button is clicked, getStats is run in the context of current tab
+stats_button.addEventListener("click", async () => {
   let [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-
-  chrome.scripting.executeScript({
-    target: { tabId: tab.id },
-    function: setPageBackgroundColor,
-  });
+  chrome.scripting.executeScript(
+    {
+      target: { tabId: tab.id },
+      function: getStats,
+    },
+    (stats) => {
+      console.log(stats[0]["result"]);
+      let textNode = document.getElementById("stats-text");
+      textNode.textContent = stats[0]["result"];
+    }
+  );
 });
 
-// The body of this function will be execuetd as a content script inside the
-// current page
-function setPageBackgroundColor() {
-	document.body.style.backgroundColor = "#" + Math.floor(Math.random()*16777215).toString(16);
+function getStats() {
+  //console.log(localStorage.getItem("nyt-wordle-state"));
+  return localStorage.getItem("nyt-wordle-state")
 }
