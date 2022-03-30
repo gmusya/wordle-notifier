@@ -9,16 +9,19 @@ client = discord.Client()
 
 channel_id = int(input("enter server id : "))
 
-all_messages = ["test"]
+all_messages = []
 
 @tasks.loop(minutes=0.1)
 async def test():
     channel = client.get_channel(channel_id)
     print("I tried")
+    to_wait = []
     while len(all_messages):
         mess = all_messages[-1]
-        await channel.send(mess)
+        to_wait.append(channel.send(mess))
         all_messages.pop()
+    for process in to_wait:
+        await process
         
 
 
@@ -31,12 +34,12 @@ async def on_ready():
 async def on_message(message):
     if message.author == client.user:
         return
-
-    if message.content.startswith('$hello'):
-        await message.channel.send('Hello!')
     
-        channel = client.get_channel(channel_id)
-        await channel.send("hello2")
+    if message.content.startswith('$hello'):
+        await message.channel.send('stop spaming useless commands, please. You are annoying 2 different people in chat by sending them notifications')
+    
+        #channel = client.get_channel(channel_id)
+        #await channel.send("hello2")
         
 
 if not os.path.isfile("token.json"):
@@ -60,9 +63,22 @@ t1 = threading.Thread(target=lmao)
 t1.start()
 
 
-from flask import Flask
+from flask import Flask, request
 
 app = Flask(__name__)
+
+def parse(x):
+    if len(x) == 5:
+        return x
+    return x[:5] + '\n' + parse(x[5:])
+
+@app.route('/notify')
+def notify():
+    #id = request.args.get("server_id")
+    text = request.args.get("user") + " completed puzzle!\n||" + parse(request.args.get("log")) + '||'
+    print(text)
+    all_messages.append(text)
+    return ""
 
 @app.route('/a1')
 def hello():
