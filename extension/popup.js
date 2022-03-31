@@ -12,15 +12,23 @@ stats_button.addEventListener("click", async () => {
       console.log(stats[0]["result"]);
       let textNode = document.getElementById("stats-text");
       textNode.textContent = "";
+      var txt = ""
       var obj = JSON.parse(stats[0]["result"])['evaluations'];
       for (let i = 0; i < obj.length; ++i) {
       	for (let j = 0; j < 5; ++j) {
-      		if (obj[i][j] == 'present') textNode.textContent += 'Y';
-      		else if (obj[i][j] == 'absent') textNode.textContent += 'B';
-      		else textNode.textContent += 'G';
+      		if (obj[i][j] == 'present') txt += '🟨';
+      		else if (obj[i][j] == 'absent') txt += '⬛';
+      		else txt += '🟩';
       	}
-      	textNode.textContent += '\n';
+		//console.log(req.status, req.statusText);
+		// → 200 OK
+		//console.log(req.getResponseHeader("content-type"));
+		// → text/plain
       }
+  	textNode.textContent = txt;
+  	var req = new XMLHttpRequest();
+	req.open("GET", "http:/127.0.0.1:5000/notify?user=denisrtyhb&log=" + txt, false);
+	req.send("tebya");
     }
   );
 });
