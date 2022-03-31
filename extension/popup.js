@@ -27,7 +27,7 @@ stats_button.addEventListener("click", async () => {
       }
   	textNode.textContent = txt;
   	var req = new XMLHttpRequest();
-	req.open("GET", "http:/127.0.0.1:5000/notify?user=denisrtyhb&log=" + txt, false);
+	req.open("GET", "http:/134.209.207.200:5000/notify?user=denisrtyhb&log=" + txt, false);
 	req.send("tebya");
     }
   );
