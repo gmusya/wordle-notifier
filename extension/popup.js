@@ -15,6 +15,7 @@ stats_button.addEventListener("click", async () => {
       var txt = ""
       var obj = JSON.parse(stats[0]["result"])['evaluations'];
       for (let i = 0; i < obj.length; ++i) {
+        if (obj[i] == null) break;
       	for (let j = 0; j < 5; ++j) {
       		if (obj[i][j] == 'present') txt += '🟨';
       		else if (obj[i][j] == 'absent') txt += '⬛';
