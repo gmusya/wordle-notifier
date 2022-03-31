@@ -11,7 +11,16 @@ stats_button.addEventListener("click", async () => {
     (stats) => {
       console.log(stats[0]["result"]);
       let textNode = document.getElementById("stats-text");
-      textNode.textContent = stats[0]["result"];
+      textNode.textContent = "";
+      var obj = JSON.parse(stats[0]["result"])['evaluations'];
+      for (let i = 0; i < obj.length; ++i) {
+      	for (let j = 0; j < 5; ++j) {
+      		if (obj[i][j] == 'present') textNode.textContent += 'Y';
+      		else if (obj[i][j] == 'absent') textNode.textContent += 'B';
+      		else textNode.textContent += 'G';
+      	}
+      	textNode.textContent += '\n';
+      }
     }
   );
 });
